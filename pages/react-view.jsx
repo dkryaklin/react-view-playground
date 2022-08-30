@@ -1,15 +1,32 @@
 import { View, PropTypes } from "react-view";
 import Component from "./component";
-import { Button } from "@beamery/lib-ds-components";
+import { Tooltip, Button } from "@beamery/lib-ds-components";
+
+const CODE = `import * as React from "react";
+import {
+  Tooltip,
+  Button
+} from "@beamery/lib-ds-components";
+
+export default () => {
+  return (
+    <Tooltip value="Hello">
+      {props => (
+        <Button {...props}>button with tooltip</Button>
+      )}
+    </Tooltip>
+  );
+}`;
 
 export default () => (
   <View
-    initialCode={`() => {
-  return <Tooltip value="test">{(props) => <Button {...props}>button with tooltip</Button>}</Tooltip>;
-}
-`}
+    initialCode={CODE}
     componentName="Tooltip"
     props={{
+      children: {
+        value: (props) => <Button {...props}>button with tooltip</Button>,
+        type: PropTypes.ReactNode,
+      },
       value: {
         value: "Hello",
         type: PropTypes.String,
@@ -29,7 +46,7 @@ export default () => (
         description: "Handler that is called when the overlay's open state changes.",
       },
       position: {
-        defaultValue: "left",
+        defaultValue: "top",
         type: PropTypes.Enum,
         options: {
           left: "left",
@@ -44,12 +61,12 @@ export default () => (
       },
     }}
     scope={{
-      Tooltip: Component,
+      Tooltip: Tooltip,
       Button: Button,
     }}
     imports={{
       "@beamery/lib-ds-components": {
-        named: ["Tooltip"],
+        named: ["Tooltip", "Button"],
       },
     }}
   />
